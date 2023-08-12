@@ -1,20 +1,16 @@
 use std::fs::{File, remove_file};
 use std::io::Write;
-use std::path::Path;
 use regex::Regex;
-use crate::state::State;
+use tauri::{AppHandle};
+use crate::state::{ServiceAccess};
 use crate::utils::read_lines;
+use crate::constants::MODLOADER_VERSION;
 
-const MODLOADER_VERSION: &str = "v0.6.1";
 const MODLOADER_ZIP_NAME: &str = "modloader.zip";
 
 #[tauri::command]
-pub fn clean_download_mod_loader(state: tauri::State<'_, State>) -> Result<bool, String> {
-    let game_path_mutex = match state.game_path.lock() {
-        Ok(game_path) => game_path.clone(),
-        Err(_) => return Err("Internal error".to_string())
-    };
-    let game_path = Path::new(game_path_mutex.as_str());
+pub fn clean_download_mod_loader(app_handle: AppHandle) -> Result<bool, String> {
+    let game_path = app_handle.get_game_path();
     let modloader_zip_path = game_path.join(MODLOADER_ZIP_NAME);
     if modloader_zip_path.exists() {
         remove_file(modloader_zip_path).expect("Failed to remove file");
@@ -23,15 +19,11 @@ pub fn clean_download_mod_loader(state: tauri::State<'_, State>) -> Result<bool,
 }
 
 #[tauri::command]
-pub async fn download_mod_loader(state: tauri::State<'_, State>) -> Result<bool, String> {
+pub async fn download_mod_loader(app_handle: AppHandle) -> Result<bool, String> {
     let url = format!("https://github.com/LavaGang/MelonLoader/releases/download/{MODLOADER_VERSION}/MelonLoader.x64.zip");
     let response = reqwest::get(url).await.unwrap();
 
-    let game_path_mutex = match state.game_path.lock() {
-        Ok(game_path) => game_path.clone(),
-        Err(_) => return Err("Internal error".to_string())
-    };
-    let game_path = Path::new(game_path_mutex.as_str());
+    let game_path = app_handle.get_game_path();
     let modloader_zip_path = game_path.join(MODLOADER_ZIP_NAME);
     let mut file = match File::create(modloader_zip_path) {
         Err(why) => panic!("couldn't create {}", why),
@@ -45,12 +37,8 @@ pub async fn download_mod_loader(state: tauri::State<'_, State>) -> Result<bool,
 }
 
 #[tauri::command]
-pub fn install_mod_loader(state: tauri::State<'_, State>) -> Result<bool, String> {
-    let game_path_mutex = match state.game_path.lock() {
-        Ok(game_path) => game_path.clone(),
-        Err(_) => return Err("Internal error".to_string())
-    };
-    let game_path = Path::new(game_path_mutex.as_str());
+pub fn install_mod_loader(app_handle: AppHandle) -> Result<bool, String> {
+    let game_path = app_handle.get_game_path();
     let modloader_zip_path = game_path.join(MODLOADER_ZIP_NAME);
     if !modloader_zip_path.exists() {
         return Ok(false);
@@ -85,12 +73,8 @@ pub fn install_mod_loader(state: tauri::State<'_, State>) -> Result<bool, String
 }
 
 #[tauri::command]
-pub fn check_mod_loader(state: tauri::State<'_, State>) -> Result<String, String> {
-    let game_path_mutex = match state.game_path.lock() {
-        Ok(game_path) => game_path.clone(),
-        Err(_) => return Err("Internal error".to_string())
-    };
-    let game_path = Path::new(game_path_mutex.as_str());
+pub fn check_mod_loader(app_handle: AppHandle) -> Result<String, String> {
+    let game_path = app_handle.get_game_path();
     if !game_path.exists() {
         return Ok("not-installed".to_string());
     }
