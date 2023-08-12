@@ -2,12 +2,12 @@
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeBuildCommand": "pnpm run build",
-    "beforeDevCommand": "pnpm run dev",
-    "devPath": "http://localhost:5173",
+    "beforeDevCommand": "pnpm run dev --port=5174",
+    "devPath": "http://localhost:5174",
     "distDir": "../build"
   },
   "package": {
-    "productName": "app-desktop",
+    "productName": "lets-school-central-app-desktop",
     "version": "0.1.0"
   },
   "tauri": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "app.lets-school-central",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "app-desktop",
+        "title": "Let's School Central Desktop",
         "width": 800
       }
     ]
