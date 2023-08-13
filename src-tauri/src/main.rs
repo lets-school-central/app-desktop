@@ -34,18 +34,33 @@ fn main() {
             check_mod_loader
         ])
         .setup(|app| {
+            let splashscreen_window = app.get_window("splashscreen").unwrap();
+            let main_window = app.get_window("main").unwrap();
+
             #[cfg(debug_assertions)]
             {
-                let window = app.get_window("main").unwrap();
-                window.open_devtools();
-                window.close_devtools();
+                main_window.open_devtools();
+                main_window.close_devtools();
             }
 
-            let handle = app.handle();
+            let app_handle = app.handle();
 
-            let app_state: tauri::State<state::AppState> = handle.state();
-            let db = database::initialize_database(&handle).expect("error while initializing database");
-            *app_state.db.lock().unwrap() = Some(db);
+            tauri::async_runtime::spawn(async move {
+                println!("Initializing...");
+                std::thread::sleep(std::time::Duration::from_secs(2));
+
+                let app_state: tauri::State<state::AppState> = app_handle.state();
+                let db = database::initialize_database(&app_handle).expect("error while initializing database");
+                *app_state.db.lock().unwrap() = Some(db);
+
+                std::thread::sleep(std::time::Duration::from_secs(2));
+                println!("Done initializing.");
+
+                splashscreen_window.close().unwrap();
+                main_window.show().unwrap();
+
+                app_handle.emit_all("app-initialized", ()).unwrap();
+            });
 
             Ok(())
         })
