@@ -20,3 +20,9 @@ export const modLoaderCommands = {
         return invoke('clean_download_mod_loader');
     }
 }
+
+export const authCommands = {
+    authenticate: function(username: string, password: string): Promise<boolean> {
+        return invoke('authenticate', { username, password });
+    }
+}

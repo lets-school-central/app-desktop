@@ -1,8 +1,19 @@
-<script>
+<script lang="ts">
     import MachineDisplay from "$lib/components/MachineDisplay.svelte";
     import {initializationMachine} from "$lib/machines/initialization-machine";
     import ContainerScreen from "$lib/components/ContainerScreen.svelte";
-    import SelectGamePath from "$lib/components/initialization-screen/SelectGamePath.svelte";
+    import SelectGamePath from "./SelectGamePath.svelte";
+    import {invoke} from "@tauri-apps/api/tauri";
+    import {appStore} from "$lib/stores/app";
+    import {goto} from "$app/navigation";
+
+    $: if ($appStore.isInitialized) {
+        goto("/");
+    }
+
+    async function onSuccess() {
+        await invoke("set_initialized", {isInitialized: true});
+    }
 </script>
 
 <ContainerScreen>
@@ -91,7 +102,7 @@
                     progress: "full"
                 },
             }}
-            on:success
+            on:success={onSuccess}
             let:state
             let:send
             let:context
@@ -102,15 +113,21 @@
             <div class="flex flex-col gap-6">
                 <h2 class="text-2xl">Mod loader outdated, update ?</h2>
                 <div class="flex flex-row gap-6 px-16">
-                    <button class="flex-1 btn btn-sm variant-filled-primary" on:click={() => send("INSTALL_MODS_LOADER")}>Update</button>
-                    <button class="flex-1 btn btn-sm variant-filled-warning" on:click={() => send("CANCEL_MODS_LOADER_INSTALL")}>Ignore</button>
+                    <button class="flex-1 btn btn-sm variant-filled-primary"
+                            on:click|once={() => send("INSTALL_MODS_LOADER")}>Update
+                    </button>
+                    <button class="flex-1 btn btn-sm variant-filled-warning"
+                            on:click|once={() => send("CANCEL_MODS_LOADER_INSTALL")}>Ignore
+                    </button>
                 </div>
             </div>
         {:else if state === "mods-loader-downloading.waiting" && context.modsLoaderStatus === "not-installed"}
             <div class="flex flex-col gap-6">
                 <h2 class="text-2xl">Mod loader not installed, install ?</h2>
                 <div class="flex flex-row gap-6 px-16">
-                    <button class="flex-1 btn btn-sm variant-filled-primary" on:click={() => send("INSTALL_MODS_LOADER")}>Install</button>
+                    <button class="flex-1 btn btn-sm variant-filled-primary"
+                            on:click|once={() => send("INSTALL_MODS_LOADER")}>Install
+                    </button>
                 </div>
             </div>
         {/if}

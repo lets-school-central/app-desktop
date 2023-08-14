@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {useMachine} from "@xstate/svelte";
+    import type {useMachine} from "@xstate/svelte";
     import {popup} from '@skeletonlabs/skeleton';
 
     export let send: ReturnType<typeof useMachine>['send'];
@@ -10,7 +10,7 @@
 </script>
 
 <div class="flex flex-col gap-6">
-    <form class="flex flex-row gap-3" on:submit|preventDefault={() => send('RETRY')}>
+    <form class="flex flex-row gap-3" on:submit|preventDefault|once={() => send('RETRY')}>
         <input class="input" bind:value={gamePath} placeholder="Type the installation folder of your game..."/>
         <button
                 type="submit"

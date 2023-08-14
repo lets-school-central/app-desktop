@@ -4,7 +4,7 @@
     import '../app.postcss';
 
     import {computePosition, autoUpdate, offset, shift, flip, arrow} from '@floating-ui/dom';
-    import {storePopup} from '@skeletonlabs/skeleton';
+    import {storePopup, Toast} from '@skeletonlabs/skeleton';
     import {onMount} from "svelte";
     import {page} from '$app/stores';
     import {appStore, waitAppInitialization} from "$lib/stores/app";
@@ -14,6 +14,8 @@
     onMount(waitAppInitialization);
 </script>
 
-{#if $appStore.initialized || $page.route.id === '/splashscreen'}
+<Toast/>
+
+{#if $appStore.isReady || $page.route.id === '/splashscreen'}
     <slot/>
 {/if}
