@@ -1,5 +1,5 @@
-<script>
-	import StepCheckGame from "$lib/components/game/StepCheckGame.svelte";
+<script lang="ts">
+    import InitializationMachineDisplay from "$lib/components/initialization-screen/InitializationScreen.svelte";
 </script>
 
-<StepCheckGame />
+<InitializationMachineDisplay />

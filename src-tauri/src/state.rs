@@ -4,6 +4,7 @@ use std::sync::Mutex;
 use tauri::{AppHandle, State, Manager};
 
 pub struct AppState {
+    pub initialized: Mutex<bool>,
     pub game_path: Mutex<Option<String>>,
     pub db: Mutex<Option<Connection>>,
 }

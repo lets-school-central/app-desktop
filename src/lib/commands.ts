@@ -7,7 +7,7 @@ export const gameInstallationCommands = {
 }
 
 export const modLoaderCommands = {
-    check: function(): Promise<"valid" | "outdated" | "not-installed"> {
+    check: function(): Promise<"installed" | "outdated" | "not-installed"> {
         return invoke('check_mod_loader');
     },
     install: function(): Promise<boolean> {

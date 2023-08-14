@@ -1,12 +1,15 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod handlers;
-mod utils;
-mod state;
-mod database;
 mod constants;
+mod database;
+mod state;
+mod utils;
 
 use handlers::{
+    initialization::{
+        is_app_initialized,
+    },
     gameinstallation::{
         check_game_installation,
     },
@@ -23,10 +26,12 @@ use tauri::Manager;
 fn main() {
     tauri::Builder::default()
         .manage(state::AppState {
+            initialized: false.into(),
             game_path: Default::default(),
             db: Default::default(),
         })
         .invoke_handler(tauri::generate_handler![
+            is_app_initialized,
             check_game_installation,
             download_mod_loader,
             clean_download_mod_loader,
@@ -46,7 +51,6 @@ fn main() {
             let app_handle = app.handle();
 
             tauri::async_runtime::spawn(async move {
-                println!("Initializing...");
                 std::thread::sleep(std::time::Duration::from_secs(2));
 
                 let app_state: tauri::State<state::AppState> = app_handle.state();
@@ -54,12 +58,13 @@ fn main() {
                 *app_state.db.lock().unwrap() = Some(db);
 
                 std::thread::sleep(std::time::Duration::from_secs(2));
-                println!("Done initializing.");
 
                 splashscreen_window.close().unwrap();
                 main_window.show().unwrap();
 
-                app_handle.emit_all("app-initialized", ()).unwrap();
+                std::thread::sleep(std::time::Duration::from_secs(2));
+                *app_state.initialized.lock().unwrap() = true;
+                app_handle.emit_all("app_initialized", ()).unwrap();
             });
 
             Ok(())

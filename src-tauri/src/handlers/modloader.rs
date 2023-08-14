@@ -92,7 +92,7 @@ pub fn check_mod_loader(app_handle: AppHandle) -> Result<String, String> {
                 let caps = re.captures(&line).unwrap();
                 let version = caps.get(1).unwrap().as_str();
                 if version == MODLOADER_VERSION {
-                    return Ok("valid".to_string());
+                    return Ok("installed".to_string());
                 }
             }
         }
