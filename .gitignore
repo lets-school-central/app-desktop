@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 .idea/
 .vscode/
 src/lib/machines/*.typegen.ts
+data.db
