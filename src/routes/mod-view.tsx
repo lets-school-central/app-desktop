@@ -4,6 +4,12 @@ import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import { Link, useParams } from "react-router-dom";
 
 import Header from "$/components/Header";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "$/components/ui/accordion";
 import { Badge } from "$/components/ui/badge";
 import { Button } from "$/components/ui/button";
 import { Card, CardContent, CardHeader } from "$/components/ui/card";
@@ -14,7 +20,7 @@ import type { User } from "$/models/user";
 export function ModView() {
 	const { id } = useParams();
 	const [mod, setMod] = useState<Mod & { expand: { author: User } }>();
-	const [versions, setVersions] = useState<ModVersion[]>([]);
+	const [versions, setVersions] = useState<ModVersion[]>();
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -22,11 +28,12 @@ export function ModView() {
 			return;
 		}
 
+		setVersions(undefined);
+
 		(async () => {
 			const mod = await pb.collection("mods").getOne<Mod & { expand: { author: User } }>(id, {
 				expand: "author",
 			});
-			console.log(mod);
 			setMod(mod);
 			setIsLoading(false);
 		})();
@@ -66,18 +73,25 @@ export function ModView() {
 					<CardHeader>
 						<h3 className="text-xl">Details</h3>
 					</CardHeader>
-					<CardContent className="flex flex-col gap-3 divide-y [&>_:not(:first-child)]:pt-3">
+					<CardContent className="flex flex-col gap-3">
 						<p>Author: <b>@{mod.expand.author.username}</b></p>
 						<div>
-							<p>Versions:
-								<ul className="list-disc pl-5">
-									{versions.map(version => (
-										<li key={version.id} className="[&:not(:first-child)]:marker:text-secondary [&:not(:first-child)]:text-secondary">
-											{version.version}
-										</li>
-									))}
-								</ul>
-							</p>
+							<p>Versions:</p>
+							{!versions && (<p>Loading</p>)}
+							{(versions && versions.length === 0) && (<p>No versions</p>)}
+							{(versions && versions.length > 0)
+								&& (
+									<Accordion type="single" collapsible defaultValue={versions[0].id}>
+										{versions.map(version => (
+											<AccordionItem value={version.id} key={version.id}>
+												<AccordionTrigger>{version.version}</AccordionTrigger>
+												<AccordionContent>
+													{version.changelog}
+												</AccordionContent>
+											</AccordionItem>
+										))}
+									</Accordion>
+								)}
 						</div>
 					</CardContent>
 				</Card>
