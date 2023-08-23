@@ -11,14 +11,14 @@ import pb from "$/lib/pocketbase";
 import type { Mod } from "$/models/mod";
 import { useModsStore } from "$/stores/modsStore";
 
-export function Mods() {
+export function ModsList() {
 	const navigate = useNavigate();
 	const [mods, setMods] = useState<Mod[]>([]);
 	const installedMods = useModsStore(state => state.installedMods);
 
 	useEffect(() => {
 		(async () => {
-			const mods = await pb.collection("mods").getList<Mod>(1, 20, { sort: "-updated" });
+			const mods = await pb.collection("mods").getList<Mod>(1, 20, { sort: "-updated", $cancelKey: "mods-list" });
 			setMods(mods.items);
 		})();
 	}, []);
