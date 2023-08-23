@@ -1,1 +1,0 @@
-pub const MODLOADER_VERSION: &str = "v0.6.1";

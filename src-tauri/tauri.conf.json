@@ -1,75 +1,80 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "pnpm run build",
-    "beforeDevCommand": "pnpm run dev --port=5174",
-    "devPath": "http://localhost:5174",
-    "distDir": "../build"
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
   },
   "package": {
-    "productName": "lets-school-central-app-desktop",
-    "version": "0.1.0"
+    "productName": "lets-school-central.app",
+    "version": "0.0.0"
   },
   "tauri": {
     "allowlist": {
+      "all": false,
       "shell": {
+        "all": false,
         "open": true
+      },
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": [
+          "https://github.com/LavaGang/MelonLoader/releases/download/**",
+          "https://backend.lets-school-central.app/**"
+        ]
+      },
+      "fs": {
+        "all": false,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "removeFile": true,
+        "exists": true,
+        "scope": [
+          "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Let's School",
+          "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Let's School\\**"
+        ]
+      },
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
       }
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
-      "deb": {
-        "depends": []
-      },
-      "externalBin": [],
+      "targets": "all",
+      "identifier": "lets-school-central.app",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
-      ],
-      "identifier": "app.lets-school-central",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+      ]
     },
     "security": {
       "csp": null
     },
-    "updater": {
-      "active": false
-    },
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
-        "title": "Let's School Central Desktop",
+        "title": "lets-school-central.app",
         "width": 800,
-        "visible": false
-      },
-      {
-        "width": 400,
-        "height": 200,
+        "height": 600,
         "decorations": false,
-        "url": "splashscreen",
-        "label": "splashscreen"
+        "transparent": true,
+        "center": true,
+        "minWidth": 500.0
       }
     ]
   }

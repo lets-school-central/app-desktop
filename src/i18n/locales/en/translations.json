@@ -1,0 +1,20 @@
+{
+    "machines.mod-initialization.states.game-installation-checking.running": "Checking for game installation...",
+    "machines.mod-initialization.states.game-installation-checking.success": "Game found.",
+    "machines.mod-initialization.states.game-installation-checking.error": "Game not found.",
+    "machines.mod-initialization.states.mods-loader-checking.running": "Checking for modloader...",
+    "machines.mod-initialization.states.mods-loader-checking.error": "Modloader check failed.",
+    "machines.mod-initialization.states.mods-loader-checking.outdated": "Modloader is outdated.",
+    "machines.mod-initialization.states.mods-loader-checking.installed": "Modloader is installed and up to date.",
+    "machines.mod-initialization.states.mods-loader-checking.not-installed": "Modloader is not installed.",
+    "machines.mod-initialization.states.mods-loader-downloading.running": "Downloading modloader...",
+    "machines.mod-initialization.states.mods-loader-downloading.error": "Modloader download failed.",
+    "machines.mod-initialization.states.mods-loader-downloading.success": "Modloader downloaded.",
+    "machines.mod-initialization.states.mods-loader-installing.running": "Installing modloader...",
+    "machines.mod-initialization.states.mods-loader-installing.error": "Modloader installation failed.",
+    "machines.mod-initialization.states.mods-loader-installing.success": "Modloader installed.",
+    "machines.mod-initialization.states.mods-loader-cleaning-download.running": "Cleaning up...",
+    "machines.mod-initialization.states.mods-loader-cleaning-download.error": "Cleanup failed.",
+    "machines.mod-initialization.states.mods-loader-cleaning-download.success": "Cleaned up successfully.",
+    "machines.mod-initialization.states.success": "Everything is good, you are ready to go!"
+}
