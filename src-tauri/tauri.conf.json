@@ -22,7 +22,8 @@
         "request": true,
         "scope": [
           "https://github.com/LavaGang/MelonLoader/releases/download/**",
-          "https://backend.lets-school-central.app/**"
+          "https://backend.lets-school-central.app/**",
+          "http://localhost:8090/**"
         ]
       },
       "fs": {

@@ -20,9 +20,9 @@ export const modInitializationMachine = createMachine(
 			services: {} as {
 				verifyGamePath: { data: Awaited<ReturnType<ModsStoreActions["verifyGamePath"]>> };
 				verifyModsLoader: { data: Awaited<ReturnType<ModsStoreActions["verifyModsLoader"]>> };
-				download: { data: Awaited<ReturnType<ModsStoreActions["download"]>> };
-				install: { data: Awaited<ReturnType<ModsStoreActions["install"]>> };
-				cleanDownload: { data: Awaited<ReturnType<ModsStoreActions["cleanDownload"]>> };
+				download: { data: Awaited<ReturnType<ModsStoreActions["downloadModsLoader"]>> };
+				install: { data: Awaited<ReturnType<ModsStoreActions["installModsLoader"]>> };
+				cleanDownload: { data: Awaited<ReturnType<ModsStoreActions["cleanModsLoaderDownload"]>> };
 			},
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			events: {} as (
@@ -244,16 +244,16 @@ export const modInitializationMachine = createMachine(
 				return verifyModsLoader();
 			},
 			async download() {
-				const { download } = useModsStore.getState();
+				const { downloadModsLoader: download } = useModsStore.getState();
 				return download();
 			},
 			async install() {
-				const { install } = useModsStore.getState();
+				const { installModsLoader: install } = useModsStore.getState();
 				await sleep(2000);
 				return install();
 			},
 			async cleanDownload() {
-				const { cleanDownload } = useModsStore.getState();
+				const { cleanModsLoaderDownload: cleanDownload } = useModsStore.getState();
 				await sleep(500);
 				return cleanDownload();
 			},
