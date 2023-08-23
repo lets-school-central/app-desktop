@@ -5,14 +5,14 @@ import { Button } from "$/components/ui/button";
 import { Card, CardContent, CardHeader } from "$/components/ui/card";
 import { useModsStore } from "$/stores/modsStore";
 
-export default function ModManagerCard() {
+export default function ModsManagerCard() {
 	const isInstalled = useModsStore(state => state.isInstalled);
 
 	return (
 		<Card>
 			<CardHeader className="flex flex-row gap-2">
 				<span>
-                    Mod Manager
+                    Mods Manager
 				</span>
 				{isInstalled ? <CheckCircledIcon className="text-primary" /> : <CrossCircledIcon className="text-destructive" />}
 			</CardHeader>
